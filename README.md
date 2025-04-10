@@ -1,244 +1,127 @@
-# Railway Management System
+# Railway Seat Booking System
 
-This is a railway management system built using Node.js and Express with PostgreSQL as the database. The system allows users to register, log in, check train seat availability, book a seat, and view booking details. It also includes an admin feature to add new trains to the system. JWT is used for user authentication, and admin endpoints are secured with an API key.
+This is a complete Railway Seat Booking System built using **Node.js**, **Express**, **PostgreSQL**, and a **React + Next.js** frontend. Users can register, log in, book 1–7 seats, and reset all bookings. It uses JWT for secure user authentication.
 
 ## Table of Contents
-1. [Prerequisites](#prerequisites)
-2. [Setup Instructions](#setup-instructions)
-3. [Running the Application](#running-the-application)
-4. [Running Tests (Optional)](#running-tests-optional)
-5. [API Endpoints](#api-endpoints)
-6. [Assumptions](#assumptions)
+1. Features
+2. Prerequisites
+3. Setup Instructions
+4. Running the Application
+5. API Endpoints
+6. Frontend Features
+7. Assumptions
 
-## Prerequisites
+---
 
-Before running this project, ensure that you have the following installed:
-- Node.js (version 14 or above)
-- PostgreSQL (version 12 or above)
-- npm (Node Package Manager)
+## ✅ Features
 
-## Setup Instructions
+- Secure user registration and login (with JWT)
+- Seat booking UI with max 7 seat selection
+- Real-time seat availability
+- Responsive layout optimized for desktop & mobile
+- Reset all seats for demo/admin use
 
-Follow these steps to set up the project on your local machine.
+---
+
+## ⚙️ Prerequisites
+
+Ensure the following are installed:
+
+- Node.js (v14 or higher)
+- PostgreSQL (v12 or higher)
+- npm (comes with Node)
+
+---
+
+## 🛠️ Setup Instructions
 
 ### 1. Clone the repository
+
 ```bash
-git clone https://github.com/your-username/railway-management.git
-cd railway-management
+git clone https://github.com/shiva-code-code/railway-seat-booking.git
+cd railway-seat-booking
 ```
 
-### 2. Install Dependencies
-Run the following command to install the required Node.js packages:
+### 2. Install server dependencies
+
 ```bash
 npm install
 ```
 
-### 3. Set Up Environment Variables
-Create a `.env` file in the root directory of the project with the following environment variables:
+### 3. Setup PostgreSQL
+
+Create the DB and tables:
 
 ```bash
-DB_USER=your_db_user        # PostgreSQL user
-DB_HOST=localhost           # Host for PostgreSQL, typically localhost
-DB_NAME=railway             # Name of your PostgreSQL database
-DB_PASSWORD=your_db_password # PostgreSQL password
-DB_PORT=5432                # Port number for PostgreSQL, typically 5432
-JWT_SECRET=your_jwt_secret   # A secret key for JWT tokens
-ADMIN_API_KEY=your_admin_api_key # Admin API key to access protected endpoints
+createdb railway_db
+psql -U your_user -d railway_db -f models/models.sql
 ```
 
-### 4. Set Up PostgreSQL Database
+### 4. Create a .env file in the root directory
 
-1. Create a PostgreSQL database for this project:
-   ```bash
-   createdb railway
-   ```
+```env
+DB_USER=your_user
+DB_PASSWORD=your_password
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=railway_db
+JWT_SECRET=secret123
+ADMIN_API_KEY=admin123
+```
 
-2. Create the required tables by running the provided SQL file in `models/models.sql`:
-   ```bash
-   psql -U your_db_user -d railway -f models/models.sql
-   ```
+---
 
-3. Verify that the tables (`users`, `trains`, `bookings`) are created:
-   ```bash
-   \dt
-   ```
+## 🚀 Running the Application
 
-### 5. Seed Initial Data (Optional)
-You can add initial data like trains using the admin API once the server is running, or manually insert data into the PostgreSQL tables.
+### 1. Start the backend
 
-## Running the Application
-
-### 1. Start the Server
-Run the following command to start the server:
 ```bash
-npm start
+node app.js
 ```
 
-The server will be running on `http://localhost:3000` by default.
+### 2. Run the frontend
 
-### 2. Access API Endpoints
-Once the server is running, you can start using the API by sending requests to the following endpoints:
-
-| **Endpoint**                   | **Method** | **Description**                               |
-|---------------------------------|------------|-----------------------------------------------|
-| `/auth/register`                | `POST`     | Registers a new user                          |
-| `/auth/login`                   | `POST`     | Logs in a user and returns a JWT token        |
-| `/admin/add-train`              | `POST`     | Admin adds a new train                        |
-| `/train/availability`           | `GET`      | Gets seat availability between two stations   |
-| `/book/book-seat`               | `POST`     | Books a seat on a specific train              |
-| `/book/booking/:id`             | `GET`      | Retrieves specific booking details            |
-
-## Running Tests (Optional)
-
-To ensure your application is working as expected, you can write and run tests.
-
-### 1. Set Up Testing Framework
-Install a testing framework such as Jest or Mocha:
 ```bash
-npm install --save-dev jest
+cd railway-frontend
+npm install
+npm run dev
 ```
 
-### 2. Create Tests
-You can create test files in a `__tests__` directory. Here’s an example of a basic test:
+---
 
-```javascript
-// __tests__/auth.test.js
-const request = require('supertest');
-const app = require('../app');
+## 📡 API Endpoints
 
-describe('POST /auth/register', () => {
-  it('should register a new user', async () => {
-    const response = await request(app).post('/auth/register').send({
-      name: 'Test User',
-      email: 'test@example.com',
-      password: 'testpassword',
-    });
-    expect(response.statusCode).toBe(201);
-    expect(response.body.message).toMatch(/User registered with ID:/);
-  });
-});
-```
+| Method | Endpoint        | Description              | Auth Required |
+|--------|------------------|--------------------------|----------------|
+| POST   | /auth/register   | Register new user        | No             |
+| POST   | /auth/login      | Login and get JWT token  | No             |
+| GET    | /book/seats      | Fetch all seat data      | Yes (JWT)      |
+| POST   | /book/book-seat  | Book up to 7 seats       | Yes (JWT)      |
+| POST   | /book/reset      | Reset all seats          | Yes (JWT)      |
 
-### 3. Run Tests
-Run the tests using the following command:
-```bash
-npm test
-```
+---
 
-## API Endpoints
+## 🖥️ Frontend Features
 
-### User Registration
-**POST** `/auth/register`
+- Built with Next.js, React, and Tailwind CSS
+- Responsive layout for desktop and mobile
+- Color-coded buttons:
+  - Green = Available
+  - Yellow = Selected
+  - Red = Booked
+- Real-time seat updates after booking
 
-#### Input:
-```json
-{
-  "name": "John Doe",
-  "email": "john@example.com",
-  "password": "securePassword123"
-}
-```
+---
 
-#### Output:
-```json
-{
-  "message": "User registered with ID: 1"
-}
-```
+## ✅ Assumptions
 
-### User Login
-**POST** `/auth/login`
+- JWT expires in 1 day
+- Max of 7 seats per booking
+- Reset option is admin use only
+- Static 7xN seat grid
 
-#### Input:
-```json
-{
-  "email": "john@example.com",
-  "password": "securePassword123"
-}
-```
+---
 
-#### Output:
-```json
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR..."
-}
-```
+## 📅 Last Updated
 
-### Admin Add Train (API Key Protected)
-**POST** `/admin/add-train`
-
-#### Input:
-```json
-{
-  "trainNumber": "12345",
-  "source": "Mumbai",
-  "destination": "Delhi",
-  "seats": 100
-}
-```
-
-#### Output:
-```json
-{
-  "message": "Train added successfully"
-}
-```
-
-### Get Seat Availability
-**GET** `/train/availability?source=Mumbai&destination=Delhi`
-
-#### Output:
-```json
-[
-  {
-    "id": 1,
-    "train_number": "12345",
-    "source": "Mumbai",
-    "destination": "Delhi",
-    "seats": 100
-  },
-  {
-    "id": 2,
-    "train_number": "67890",
-    "source": "Mumbai",
-    "destination": "Delhi",
-    "seats": 75
-  }
-]
-```
-
-### Book a Seat (JWT Protected)
-**POST** `/book/book-seat`
-
-#### Input:
-```json
-{
-  "trainId": 1
-}
-```
-
-#### Output:
-```json
-{
-  "message": "Seat booked successfully"
-}
-```
-
-### Get Specific Booking Details (JWT Protected)
-**GET** `/book/booking/:id`
-
-#### Output:
-```json
-{
-  "id": 1,
-  "user_id": 1,
-  "train_id": 1,
-  "booking_date": "2024-09-07T12:34:56.000Z"
-}
-```
-
-## Assumptions
-
-1. **JWT Expiry**: The JWT token is valid for 1 hour by default. You can modify this in the `jwt.sign()` method if needed.
-2. **Database**: PostgreSQL is assumed to be running locally, but you can adjust the host and port in the `.env` file for a remote database.
-
+2025-04-10
