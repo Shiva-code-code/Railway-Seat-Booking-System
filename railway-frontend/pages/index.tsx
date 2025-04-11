@@ -19,14 +19,9 @@ export default function Home() {
       const res = await API.get('/book/seats', {
         headers: { Authorization: token || '' },
       });
-      console.log('SEATS RESPONSE:', res.data); // ✅ Debug line
-      if (Array.isArray(res.data)) {
-        setSeats(res.data as SeatType[]);
-      } else {
-        throw new Error('Invalid seat data');
-      }
-    } catch (err) {
-      console.error('Error fetching seats:', err);
+      setSeats(res.data as SeatType[]);
+
+    } catch {
       toast.error('Failed to fetch seats');
     }
   }, [token]);
@@ -89,29 +84,23 @@ export default function Home() {
     <div className="min-h-screen p-4 bg-gray-100 flex flex-col lg:flex-row items-center lg:items-start lg:justify-center">
       <div className="max-w-fit p-4 bg-white rounded-xl shadow-md">
         <h1 className="text-3xl font-bold text-center mb-6">Ticket Booking</h1>
-
         <div className="grid grid-cols-7 gap-2 mb-6">
-          {Array.isArray(seats) ? (
-            seats.map((seat) => (
-              <Seat
-                key={seat.seat_number}
-                seatNumber={seat.seat_number}
-                isBooked={seat.is_booked}
-                isSelected={selected.includes(seat.seat_number)}
-                onClick={() => handleSelect(seat.seat_number)}
-              />
-            ))
-          ) : (
-            <p className="text-red-600">Error loading seats</p>
-          )}
+          {seats.map((seat) => (
+            <Seat
+              key={seat.seat_number}
+              seatNumber={seat.seat_number}
+              isBooked={seat.is_booked}
+              isSelected={selected.includes(seat.seat_number)}
+              onClick={() => handleSelect(seat.seat_number)}
+            />
+          ))}
         </div>
-
         <div className="flex justify-between gap-4 mt-4">
           <span className="bg-yellow-400 text-black font-semibold px-4 py-2 rounded-xl shadow">
-            Booked Seats = {(seats || []).filter((s) => s.is_booked).length}
+            Booked Seats = {seats.filter((s) => s.is_booked).length}
           </span>
           <span className="bg-green-600 text-white font-semibold px-4 py-2 rounded-xl shadow">
-            Available Seats = {(seats || []).filter((s) => !s.is_booked).length}
+            Available Seats = {seats.filter((s) => !s.is_booked).length}
           </span>
         </div>
       </div>
@@ -133,7 +122,7 @@ export default function Home() {
           )}
           <input
             type="number"
-            className="border w-full px-4 py-2 rounded-xl mb-2 text-lg shadow transition-all duration-200"
+            className={`border w-full px-4 py-2 rounded-xl mb-2 text-lg shadow transition-all duration-200`}
             value={seatCount}
             onChange={(e) =>
               setSeatCount(Math.min(7, Math.max(1, +e.target.value)))
