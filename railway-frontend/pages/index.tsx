@@ -19,7 +19,8 @@ export default function Home() {
       const res = await API.get('/book/seats', {
         headers: { Authorization: token || '' },
       });
-      setSeats(res.data);
+      setSeats(res.data as SeatType[]);
+
     } catch {
       toast.error('Failed to fetch seats');
     }

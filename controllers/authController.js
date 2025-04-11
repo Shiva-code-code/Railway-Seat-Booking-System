@@ -1,8 +1,8 @@
-// controllers/authController.js
 const db = require('../config/db');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs'); // Switched from 'bcrypt' to 'bcryptjs'
 const jwt = require('jsonwebtoken');
 
+// Register a new user
 exports.register = async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -27,6 +27,7 @@ exports.register = async (req, res) => {
   }
 };
 
+// Login user and return JWT
 exports.login = async (req, res) => {
   const { email, password } = req.body;
 
