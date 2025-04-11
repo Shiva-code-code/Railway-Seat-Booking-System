@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'https://railway-seat-booking-system.onrender.com',
+  baseURL: 'https://railway-backend-production.up.railway.app',
 });
 
 API.interceptors.request.use((req) => {
@@ -13,4 +13,3 @@ API.interceptors.request.use((req) => {
 });
 
 export default API;
-
