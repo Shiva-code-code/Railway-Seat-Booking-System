@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'https://railway-backend-production.up.railway.app',
+  baseURL: 'https://8269-103-52-38-4.ngrok-free.app',
 });
 
 API.interceptors.request.use((req) => {
