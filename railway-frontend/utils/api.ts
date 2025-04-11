@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
+  baseURL: 'https://8269-103-52-38-4.ngrok-free.app', 
 });
 
 API.interceptors.request.use((req) => {
