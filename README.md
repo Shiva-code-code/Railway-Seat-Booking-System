@@ -24,7 +24,8 @@ A full-stack train seat reservation system built using **Next.js**, **Node.js**,
 | Backend      | Node.js, Express.js        |
 | Database     | PostgreSQL                 |
 | Authentication | JWT                      |
-| Hosting      | Deployment pending         |
+| Hosting      | Vercel (Frontend), AWS EC2 (Backend) |
+| Dev Tools    | Ngrok, Postman, Git        |
 
 ---
 
@@ -39,15 +40,33 @@ A full-stack train seat reservation system built using **Next.js**, **Node.js**,
 
 ---
 
-## 🛠️ Getting Started
+## 📁 Folder Structure
 
-### Prerequisites
+```
+/backend
+  ├── config/          # Database connection and environment config
+  ├── controllers/     # Handles booking and user logic
+  ├── middleware/      # Auth middleware (JWT)
+  ├── models/          # PostgreSQL models and queries
+  ├── routes/          # Express routes for API endpoints
+  ├── utils/           # Seat allocation logic and helpers
+  ├── app.js           # Main server file
+  ├── .env             # Environment variables (not committed)
+  └── package.json     # Backend dependencies
 
-- Node.js
-- PostgreSQL
-- Git
+/railway-frontend
+  ├── pages/           # Next.js pages
+  ├── components/      # Reusable UI components
+  ├── utils/           # API functions and helpers
+  ├── styles/          # Tailwind CSS and global styles
+  └── package.json     # Frontend dependencies
+```
 
-### Backend Setup
+---
+
+## 🛠️ Setup Instructions
+
+### Backend
 
 ```bash
 cd backend
@@ -55,17 +74,17 @@ npm install
 npm start
 ```
 
-Make sure to configure `.env` with PostgreSQL credentials.
+> Configure `.env` with PostgreSQL credentials.
 
-### Frontend Setup
+### Frontend
 
 ```bash
-cd frontend
+cd railway-frontend
 npm install
 npm run dev
 ```
 
-Navigate to: `http://localhost:3000`
+Open in browser: `http://localhost:3000`
 
 ---
 
@@ -77,53 +96,9 @@ Navigate to: `http://localhost:3000`
 
 ---
 
-## 📦 Project Structure
-
-```
-/backend
-  ├── routes/
-  ├── controllers/
-  ├── config/
-  └── app.js
-
-/frontend
-  ├── pages/
-  ├── components/
-  ├── utils/
-  └── styles/
-```
-
----
-
-## ✅ Completed Functionality
-
-- [x] Auth with JWT
-- [x] Booking logic with fallbacks
-- [x] Responsive Next.js UI
-- [x] PostgreSQL connection
-- [x] Seat reset mechanism
-- [ ] Deployment to Vercel / AWS (coming soon)
-
----
-
-## 🧪 Testing
-
-- ✅ Manual tests via Postman
-- ✅ JWT token auth headers
-- ✅ Validations for edge cases
-
----
-
 ## 📽️ Demo
 
-🎥 Demo video available upon request  
-🔗 Deployment pending  
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License.
+🎥 Watch the [Demo Video](https://drive.google.com/file/d/15m_qcu5KQsYNJbKOB4rEywz21tmc7bmq/view?usp=drive_link)
 
 ---
 
@@ -133,3 +108,9 @@ This project is licensed under the MIT License.
 📧 shivakumarhazari0@gmail.com  
 🔗 [LinkedIn](https://linkedin.com/in/hazarishiva)  
 🐙 [GitHub](https://github.com/Shiva-code-code)
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
