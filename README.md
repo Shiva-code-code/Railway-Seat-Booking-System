@@ -99,7 +99,7 @@ Open in browser: `http://localhost:3000`
 ## 📽️ Demo
 
 🎥 Watch the [Demo Video](https://drive.google.com/file/d/15m_qcu5KQsYNJbKOB4rEywz21tmc7bmq/view?usp=drive_link)
-
+🔗 Deployment pending  
 ---
 
 ## 🙋‍♂️ Author
