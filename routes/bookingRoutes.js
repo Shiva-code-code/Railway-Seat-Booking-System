@@ -9,3 +9,4 @@ router.post('/book-seat', authenticateJWT, bookSeats);
 router.post('/reset', resetAllSeats); // Optional: Admin only
 
 module.exports = router;
+
