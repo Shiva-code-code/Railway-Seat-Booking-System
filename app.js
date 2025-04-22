@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const authRoutes = require('./routes/authRoutes');
+const bookingRoutes = require('./routes/bookingRoutes'); // ✅ Include this
 
 dotenv.config();
 const app = express();
@@ -27,13 +28,14 @@ app.use(express.json());
 
 // Routes
 app.use('/auth', authRoutes);
+app.use('/book', bookingRoutes); // ✅ Mount booking routes
 
-// Root health check
+// Health check
 app.get('/', (req, res) => {
   res.send('✅ Backend is live');
 });
 
-// 404 fallback
+// 404 handler
 app.use((req, res) => {
   res.status(404).send('Route not found');
 });
