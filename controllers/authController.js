@@ -1,8 +1,3 @@
-const db = require('../config/db');
-const bcrypt = require('bcryptjs'); // Switched from 'bcrypt' to 'bcryptjs'
-const jwt = require('jsonwebtoken');
-
-// Register a new user
 exports.register = async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -10,9 +5,13 @@ exports.register = async (req, res) => {
     return res.status(400).json({ message: 'All fields are required' });
 
   try {
+    console.log("📥 Register attempt:", name, email);
+
     const existingUser = await db.query('SELECT * FROM users WHERE email = $1', [email]);
-    if (existingUser.rows.length > 0)
+    if (existingUser.rows.length > 0) {
+      console.log("❌ Email already exists:", email);
       return res.status(400).json({ message: 'Email already in use' });
+    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await db.query(
@@ -20,33 +19,14 @@ exports.register = async (req, res) => {
       [name, email, hashedPassword]
     );
 
+    console.log("✅ Registration success:", newUser.rows[0].id);
     res.status(201).json({ message: `User registered with ID: ${newUser.rows[0].id}` });
+
   } catch (error) {
-    console.error('Register error:', error);
-    res.status(500).json({ message: 'Server error during registration' });
-  }
-};
-
-// Login user and return JWT
-exports.login = async (req, res) => {
-  const { email, password } = req.body;
-
-  if (!email || !password)
-    return res.status(400).json({ message: 'All fields are required' });
-
-  try {
-    const userCheck = await db.query('SELECT * FROM users WHERE email = $1', [email]);
-    const user = userCheck.rows[0];
-
-    if (!user) return res.status(404).json({ message: 'User not found' });
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' });
-
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1d' });
-    res.status(200).json({ token });
-  } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({ message: 'Server error during login' });
+    console.error('🔥 Register error:', error); // show full error
+    res.status(500).json({
+      message: 'Server error during registration',
+      error: error.message, // reveal it to the frontend for now (can hide later)
+    });
   }
 };
