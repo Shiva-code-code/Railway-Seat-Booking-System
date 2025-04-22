@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'https://5306-103-52-38-4.ngrok-free.app', 
+  baseURL: 'https://railway-seat-booking-system-1.onrender.com',
 });
 
 API.interceptors.request.use((req) => {
